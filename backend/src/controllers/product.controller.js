@@ -1,0 +1,16 @@
+import { pool } from '../config/db.js';
+import { HttpError } from '../utils/http.js';
+import { productDto } from '../services/serializers.js';
+
+function payload(b={}){return {
+  product_code:b.productCode??b.product_code??null,name:String(b.name||'').trim(),price:Number(b.price||0),original_price:b.originalPrice??b.original_price??null,discount:b.discount??null,
+  category:String(b.category||'').trim(),sub_category:b.subCategory??b.sub_category??null,image:b.image||'',extra_images:JSON.stringify(b.extraImages??b.extra_images??b.images??[]),description:b.description||'',product_details:b.productDetails??b.product_details??'',
+  stock:Number(b.stock||0),status:b.status||'Active',show_size_section:b.showSizeSection??b.show_size_section??true,sizes:JSON.stringify(b.sizes||[]),colors:JSON.stringify(b.colors||[]),size_chart_json:JSON.stringify(b.sizeChart??b.size_chart_json??null)
+}}
+function validate(p){if(!p.name)throw new HttpError(400,'Product name is required.');if(!p.category)throw new HttpError(400,'Category is required.');if(!Number.isFinite(p.price)||p.price<0)throw new HttpError(400,'Price must be zero or greater.');if(!Number.isInteger(p.stock)||p.stock<0)throw new HttpError(400,'Stock must be a non-negative integer.');if(!['Active','Draft','Archived'].includes(p.status))throw new HttpError(400,'Invalid product status.');}
+export async function publicList(_req,res){const [rows]=await pool.query("SELECT * FROM products WHERE status='Active' ORDER BY created_at DESC");res.json(rows.map(productDto));}
+export async function adminList(_req,res){const [rows]=await pool.query('SELECT * FROM products ORDER BY created_at DESC');res.json(rows.map(productDto));}
+export async function one(req,res){const [rows]=await pool.query("SELECT * FROM products WHERE id=? AND status='Active' LIMIT 1",[req.params.id]);if(!rows[0])throw new HttpError(404,'Product not found.');res.json(productDto(rows[0]));}
+export async function create(req,res){const p=payload(req.body);validate(p);const [r]=await pool.query(`INSERT INTO products (product_code,name,price,original_price,discount,category,sub_category,image,extra_images,description,product_details,stock,status,show_size_section,sizes,colors,size_chart_json) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,Object.values(p));const [rows]=await pool.query('SELECT * FROM products WHERE id=?',[r.insertId]);res.status(201).json(productDto(rows[0]));}
+export async function update(req,res){const [oldRows]=await pool.query('SELECT * FROM products WHERE id=? LIMIT 1',[req.params.id]);if(!oldRows[0])throw new HttpError(404,'Product not found.');const old=productDto(oldRows[0]);const merged={...old,...req.body};const p=payload(merged);validate(p);await pool.query(`UPDATE products SET product_code=?,name=?,price=?,original_price=?,discount=?,category=?,sub_category=?,image=?,extra_images=?,description=?,product_details=?,stock=?,status=?,show_size_section=?,sizes=?,colors=?,size_chart_json=? WHERE id=?`,[...Object.values(p),req.params.id]);const [rows]=await pool.query('SELECT * FROM products WHERE id=?',[req.params.id]);res.json(productDto(rows[0]));}
+export async function remove(req,res){const [r]=await pool.query('DELETE FROM products WHERE id=?',[req.params.id]);if(!r.affectedRows)throw new HttpError(404,'Product not found.');res.status(204).end();}

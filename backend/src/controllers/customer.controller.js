@@ -1,0 +1,2 @@
+import { pool } from '../config/db.js';
+export async function list(_req,res){const [rows]=await pool.query(`SELECT c.id,c.name,c.email,c.phone,c.address,c.city,c.created_at AS createdAt,COUNT(o.id) AS orderCount,COALESCE(SUM(CASE WHEN o.status<>'Cancelled' THEN o.total ELSE 0 END),0) AS totalSpent,MAX(o.created_at) AS lastOrderAt FROM customers c LEFT JOIN orders o ON o.customer_id=c.id GROUP BY c.id ORDER BY lastOrderAt DESC, c.created_at DESC`);res.json(rows.map(r=>({...r,id:String(r.id),orderCount:Number(r.orderCount||0),totalSpent:Number(r.totalSpent||0)})));}

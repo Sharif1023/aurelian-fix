@@ -1,0 +1,166 @@
+CREATE DATABASE IF NOT EXISTS sharuu_store CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE sharuu_store;
+
+CREATE TABLE IF NOT EXISTS admins (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  username VARCHAR(80) NOT NULL UNIQUE,
+  email VARCHAR(190) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL,
+  role ENUM('super_admin','admin','manager') NOT NULL DEFAULT 'admin',
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  last_login_at DATETIME NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS products (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  product_code VARCHAR(80) NULL UNIQUE,
+  name VARCHAR(190) NOT NULL,
+  price DECIMAL(12,2) NOT NULL DEFAULT 0,
+  original_price DECIMAL(12,2) NULL,
+  discount DECIMAL(5,2) NULL,
+  category VARCHAR(120) NOT NULL,
+  sub_category VARCHAR(120) NULL,
+  image TEXT NULL,
+  extra_images JSON NULL,
+  description TEXT NULL,
+  product_details LONGTEXT NULL,
+  rating DECIMAL(3,2) NOT NULL DEFAULT 5.00,
+  reviews INT UNSIGNED NOT NULL DEFAULT 0,
+  stock INT NOT NULL DEFAULT 0,
+  status ENUM('Active','Draft','Archived') NOT NULL DEFAULT 'Active',
+  show_size_section TINYINT(1) NOT NULL DEFAULT 1,
+  sizes JSON NULL,
+  colors JSON NULL,
+  size_chart_json JSON NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_products_status_category (status, category),
+  INDEX idx_products_created (created_at)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS settings (
+  setting_key VARCHAR(100) PRIMARY KEY,
+  setting_value JSON NOT NULL,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS coupons (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  code VARCHAR(80) NOT NULL UNIQUE,
+  discount_percent DECIMAL(5,2) NOT NULL,
+  is_active TINYINT(1) NOT NULL DEFAULT 1,
+  min_subtotal DECIMAL(12,2) NOT NULL DEFAULT 0,
+  max_discount DECIMAL(12,2) NULL,
+  starts_at DATETIME NULL,
+  expires_at DATETIME NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS customers (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(190) NOT NULL,
+  email VARCHAR(190) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  password_hash VARCHAR(255) NULL,
+  address TEXT NULL,
+  city VARCHAR(120) NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uq_customer_email (email),
+  INDEX idx_customer_phone (phone)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS orders (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  order_number VARCHAR(40) NOT NULL UNIQUE,
+  customer_id BIGINT UNSIGNED NULL,
+  customer_name VARCHAR(190) NOT NULL,
+  email VARCHAR(190) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  address TEXT NOT NULL,
+  city VARCHAR(120) NULL,
+  zip VARCHAR(40) NULL,
+  subtotal DECIMAL(12,2) NOT NULL,
+  shipping_area ENUM('Chittagong','Outside') NOT NULL,
+  shipping_cost DECIMAL(12,2) NOT NULL DEFAULT 0,
+  coupon_code VARCHAR(80) NULL,
+  discount_amount DECIMAL(12,2) NOT NULL DEFAULT 0,
+  total DECIMAL(12,2) NOT NULL,
+  payment_method ENUM('COD','Card','bKash','Nagad') NOT NULL DEFAULT 'COD',
+  transaction_id VARCHAR(190) NULL,
+  payment_status ENUM('Unpaid','Pending','Paid','Failed','Refunded') NOT NULL DEFAULT 'Unpaid',
+  status ENUM('Pending','Processing','Shipped','Delivered','Cancelled') NOT NULL DEFAULT 'Pending',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  CONSTRAINT fk_orders_customer FOREIGN KEY (customer_id) REFERENCES customers(id) ON DELETE SET NULL,
+  INDEX idx_orders_status_created (status, created_at),
+  INDEX idx_orders_email (email),
+  INDEX idx_orders_phone (phone)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS order_items (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  order_id BIGINT UNSIGNED NOT NULL,
+  product_id BIGINT UNSIGNED NULL,
+  product_name VARCHAR(190) NOT NULL,
+  price DECIMAL(12,2) NOT NULL,
+  quantity INT UNSIGNED NOT NULL,
+  size VARCHAR(80) NULL,
+  color VARCHAR(120) NULL,
+  image_url TEXT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_order_items_order FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+  CONSTRAINT fk_order_items_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL,
+  INDEX idx_order_items_order (order_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS pages (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  slug VARCHAR(160) NOT NULL UNIQUE,
+  title VARCHAR(190) NOT NULL,
+  excerpt TEXT NULL,
+  body LONGTEXT NOT NULL,
+  seo_title VARCHAR(190) NULL,
+  seo_description VARCHAR(300) NULL,
+  is_published TINYINT(1) NOT NULL DEFAULT 1,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS contact_messages (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(190) NOT NULL,
+  email VARCHAR(190) NOT NULL,
+  subject VARCHAR(220) NOT NULL,
+  message TEXT NOT NULL,
+  status ENUM('New','Read','Resolved') NOT NULL DEFAULT 'New',
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  INDEX idx_messages_status_created (status, created_at)
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS media_files (
+  id BIGINT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  file_name VARCHAR(255) NOT NULL,
+  stored_name VARCHAR(255) NOT NULL UNIQUE,
+  mime_type VARCHAR(120) NOT NULL,
+  file_size BIGINT UNSIGNED NOT NULL,
+  url TEXT NOT NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+
+
+
+
+PORE---------
+USE sharuu_store;
+
+ALTER TABLE orders
+MODIFY email VARCHAR(190) NULL;
+
+ALTER TABLE customers
+MODIFY email VARCHAR(190) NULL;

@@ -1,0 +1,15 @@
+import { parseJson } from '../utils/json.js';
+
+export function productDto(r){return {
+  id:String(r.id), productCode:r.product_code||'', product_code:r.product_code||'', name:r.name,
+  price:Number(r.price), originalPrice:r.original_price==null?null:Number(r.original_price), original_price:r.original_price==null?null:Number(r.original_price),
+  discount:r.discount==null?null:Number(r.discount), category:r.category, subCategory:r.sub_category||'', sub_category:r.sub_category||'', image:r.image||'',
+  images:parseJson(r.extra_images,[]), extraImages:parseJson(r.extra_images,[]), extra_images:parseJson(r.extra_images,[]), description:r.description||'',
+  productDetails:r.product_details||'', product_details:r.product_details||'', rating:Number(r.rating||0), reviews:Number(r.reviews||0), stock:Number(r.stock||0), status:r.status,
+  showSizeSection:Boolean(r.show_size_section), show_size_section:Boolean(r.show_size_section), sizes:parseJson(r.sizes,[]), colors:parseJson(r.colors,[]),
+  sizeChart:parseJson(r.size_chart_json,null), size_chart_json:parseJson(r.size_chart_json,null), createdAt:r.created_at, created_at:r.created_at, updatedAt:r.updated_at
+}}
+export function couponDto(r){return {id:String(r.id),code:r.code,discountPercent:Number(r.discount_percent),discount_percent:Number(r.discount_percent),isActive:Boolean(r.is_active),is_active:Boolean(r.is_active),minSubtotal:Number(r.min_subtotal||0),min_subtotal:Number(r.min_subtotal||0),maxDiscount:r.max_discount==null?null:Number(r.max_discount),max_discount:r.max_discount==null?null:Number(r.max_discount),startsAt:r.starts_at,expiresAt:r.expires_at,createdAt:r.created_at}}
+export function pageDto(r){return {id:String(r.id),slug:r.slug,title:r.title,excerpt:r.excerpt||'',body:r.body||'',seoTitle:r.seo_title||'',seoDescription:r.seo_description||'',isPublished:Boolean(r.is_published),createdAt:r.created_at,updatedAt:r.updated_at}}
+export function messageDto(r){return {id:String(r.id),name:r.name,email:r.email,subject:r.subject,message:r.message,status:r.status,createdAt:r.created_at,updatedAt:r.updated_at}}
+export function orderDto(r,items=[]){return {id:String(r.id),orderNumber:r.order_number,order_number:r.order_number,customerName:r.customer_name,customer_name:r.customer_name,email:r.email,phone:r.phone,address:r.address,city:r.city||'',zip:r.zip||'',subtotal:Number(r.subtotal),shippingArea:r.shipping_area,shipping_area:r.shipping_area,shippingCost:Number(r.shipping_cost),shipping_cost:Number(r.shipping_cost),couponCode:r.coupon_code||'',discountAmount:Number(r.discount_amount||0),total:Number(r.total),paymentMethod:r.payment_method,payment_method:r.payment_method,transactionId:r.transaction_id||'',transaction_id:r.transaction_id||'',paymentStatus:r.payment_status,status:r.status,createdAt:r.created_at,created_at:r.created_at,items:items.map(i=>({id:String(i.id),productId:i.product_id?String(i.product_id):'',product_id:i.product_id?String(i.product_id):'',name:i.product_name,product_name:i.product_name,price:Number(i.price),quantity:Number(i.quantity),size:i.size||'',color:i.color||'',image:i.image_url||'',image_url:i.image_url||''}))}}

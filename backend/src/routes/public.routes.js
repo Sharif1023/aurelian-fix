@@ -1,0 +1,18 @@
+import { Router } from 'express';
+import rateLimit from 'express-rate-limit';
+import { asyncHandler } from '../utils/http.js';
+import * as products from '../controllers/product.controller.js';
+import * as settings from '../controllers/settings.controller.js';
+import * as coupons from '../controllers/coupon.controller.js';
+import * as orders from '../controllers/order.controller.js';
+import * as pages from '../controllers/page.controller.js';
+import * as contact from '../controllers/contact.controller.js';
+const router=Router();
+const writeLimiter=rateLimit({windowMs:10*60*1000,limit:30,standardHeaders:'draft-8',legacyHeaders:false,message:{message:'Too many requests. Please try again later.'}});
+router.get('/products',asyncHandler(products.publicList));router.get('/products/:id',asyncHandler(products.one));
+router.get('/settings/store_settings',asyncHandler(settings.getStore));router.get('/settings/home_settings',asyncHandler(settings.getHome));
+router.post('/coupons/validate',writeLimiter,asyncHandler(coupons.validate));
+router.post('/orders',writeLimiter,asyncHandler(orders.create));router.post('/orders/track',writeLimiter,asyncHandler(orders.track));
+router.get('/pages',asyncHandler(pages.publicList));router.get('/pages/:slug',asyncHandler(pages.publicOne));
+router.post('/contact',writeLimiter,asyncHandler(contact.create));
+export default router;

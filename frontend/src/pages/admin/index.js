@@ -1,0 +1,11 @@
+export { default as DashboardPage } from './DashboardPage';
+export { default as ProductsPage } from './ProductsPage';
+export { default as ProductEditorPage } from './ProductEditorPage';
+export { default as OrdersPage } from './OrdersPage';
+export { default as CustomersPage } from './CustomersPage';
+export { default as CouponsPage } from './CouponsPage';
+export { default as HomeContentPage } from './HomeContentPage';
+export { default as SettingsPage } from './SettingsPage';
+export { default as PagesPage } from './PagesPage';
+export { default as MessagesPage } from './MessagesPage';
+export { default as MediaPage } from './MediaPage';
