@@ -224,9 +224,12 @@ http://localhost:5173
 Admin login:
 
 ```text
-http://localhost:5173/admin/login
+http://localhost:5173/admin
 ```
-
+email & pass
+admin@example.com
+admin12345!
+admin12345
 ---
 
 # 5. Normal daily development run

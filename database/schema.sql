@@ -164,3 +164,12 @@ MODIFY email VARCHAR(190) NULL;
 
 ALTER TABLE customers
 MODIFY email VARCHAR(190) NULL;
+
+
+--------
+
+USE sharuu_store;
+
+ALTER TABLE admins
+ADD COLUMN login_slug VARCHAR(120) NOT NULL DEFAULT 'admin-login' AFTER email,
+ADD UNIQUE KEY uq_admin_login_slug (login_slug);

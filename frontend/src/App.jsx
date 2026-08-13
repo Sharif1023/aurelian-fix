@@ -6,7 +6,9 @@ import {
   Routes,
 } from 'react-router-dom';
 
-import { Toaster } from 'react-hot-toast';
+import {
+  Toaster,
+} from 'react-hot-toast';
 
 import {
   Navbar,
@@ -77,10 +79,11 @@ export default function App() {
   return (
     <BrowserRouter>
 
-      {/* Route change হলে page top-এ যাবে */}
       <ScrollToTop />
 
-      <Toaster position="top-right" />
+      <Toaster
+        position="top-right"
+      />
 
       <Routes>
 
@@ -88,56 +91,80 @@ export default function App() {
             PUBLIC ROUTES
         ===================================== */}
 
-        <Route element={<PublicLayout />}>
+        <Route
+          element={
+            <PublicLayout />
+          }
+        >
 
           <Route
             path="/"
-            element={<Home />}
+            element={
+              <Home />
+            }
           />
 
           <Route
             path="/collection"
-            element={<Collection />}
+            element={
+              <Collection />
+            }
           />
 
           <Route
             path="/product/:id"
-            element={<ProductDetail />}
+            element={
+              <ProductDetail />
+            }
           />
 
           <Route
             path="/cart"
-            element={<Cart />}
+            element={
+              <Cart />
+            }
           />
 
           <Route
             path="/checkout"
-            element={<Checkout />}
+            element={
+              <Checkout />
+            }
           />
 
           <Route
             path="/wishlist"
-            element={<Wishlist />}
+            element={
+              <Wishlist />
+            }
           />
 
           <Route
             path="/contact"
-            element={<Contact />}
+            element={
+              <Contact />
+            }
           />
 
           <Route
             path="/track-order"
-            element={<TrackOrder />}
+            element={
+              <TrackOrder />
+            }
           />
 
           <Route
             path="/sign-in"
-            element={<SignIn />}
+            element={
+              <SignIn />
+            }
           />
 
           <Route
             path="/pages/:slug"
-            element={<CmsPage />}
+            element={
+              <CmsPage />
+            }
           />
 
         </Route>
@@ -148,80 +175,112 @@ export default function App() {
         ===================================== */}
 
         <Route
-          path="/admin/login"
-          element={<AdminLogin />}
-        />
+  path="/:loginSlug"
+  element={
+    <AdminLogin />
+  }
+/>
 
 
         {/* =====================================
             PROTECTED ADMIN ROUTES
         ===================================== */}
 
-        <Route element={<AdminGuard />}>
+        <Route
+          element={
+            <AdminGuard />
+          }
+        >
 
           <Route
             path="/admin"
-            element={<AdminLayout />}
+            element={
+              <AdminLayout />
+            }
           >
 
             <Route
               index
-              element={<DashboardPage />}
+              element={
+                <DashboardPage />
+              }
             />
 
             <Route
               path="products"
-              element={<ProductsPage />}
+              element={
+                <ProductsPage />
+              }
             />
 
             <Route
               path="products/new"
-              element={<ProductEditorPage />}
+              element={
+                <ProductEditorPage />
+              }
             />
 
             <Route
               path="products/:id"
-              element={<ProductEditorPage />}
+              element={
+                <ProductEditorPage />
+              }
             />
 
             <Route
               path="orders"
-              element={<OrdersPage />}
+              element={
+                <OrdersPage />
+              }
             />
 
             <Route
               path="customers"
-              element={<CustomersPage />}
+              element={
+                <CustomersPage />
+              }
             />
 
             <Route
               path="coupons"
-              element={<CouponsPage />}
+              element={
+                <CouponsPage />
+              }
             />
 
             <Route
               path="home"
-              element={<HomeContentPage />}
+              element={
+                <HomeContentPage />
+              }
             />
 
             <Route
               path="pages"
-              element={<PagesPage />}
+              element={
+                <PagesPage />
+              }
             />
 
             <Route
               path="messages"
-              element={<MessagesPage />}
+              element={
+                <MessagesPage />
+              }
             />
 
             <Route
               path="media"
-              element={<MediaPage />}
+              element={
+                <MediaPage />
+              }
             />
 
             <Route
               path="settings"
-              element={<SettingsPage />}
+              element={
+                <SettingsPage />
+              }
             />
 
           </Route>
@@ -244,6 +303,7 @@ export default function App() {
         />
 
       </Routes>
+
     </BrowserRouter>
   );
 }
