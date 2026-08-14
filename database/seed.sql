@@ -34,14 +34,273 @@ INSERT INTO coupons (code, discount_percent, is_active, min_subtotal, max_discou
 VALUES ('WELCOME10',10,1,0,NULL)
 ON DUPLICATE KEY UPDATE discount_percent=VALUES(discount_percent), is_active=VALUES(is_active);
 
-INSERT INTO products (id,product_code,name,price,original_price,discount,category,sub_category,image,extra_images,description,product_details,rating,reviews,stock,status,show_size_section,sizes,colors,size_chart_json) VALUES
-(1,'SHR-SH-001','Architectural Linen Shirt',1890,2290,17,'Shirt','Linen','https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=1200&auto=format&fit=crop',JSON_ARRAY(),'Premium linen shirt with a clean modern silhouette.','## Details\n\nBreathable fabric, refined construction and an easy tailored fit.',4.9,18,25,'Active',1,JSON_ARRAY(JSON_OBJECT('size','S','isAvailable',true,'quantity',5),JSON_OBJECT('size','M','isAvailable',true,'quantity',8),JSON_OBJECT('size','L','isAvailable',true,'quantity',7),JSON_OBJECT('size','XL','isAvailable',true,'quantity',5)),JSON_ARRAY(JSON_OBJECT('name','Black','color','#111111'),JSON_OBJECT('name','White','color','#f5f5f5')),NULL),
-(2,'SHR-TS-001','Essential Heavyweight Tee',990,1190,16,'T-Shirt','Essentials','https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?q=80&w=1200&auto=format&fit=crop',JSON_ARRAY(),'Heavyweight everyday t-shirt.','## Details\n\nSoft cotton jersey with a structured premium hand-feel.',4.8,31,40,'Active',1,JSON_ARRAY(JSON_OBJECT('size','M','isAvailable',true,'quantity',15),JSON_OBJECT('size','L','isAvailable',true,'quantity',15),JSON_OBJECT('size','XL','isAvailable',true,'quantity',10)),JSON_ARRAY(JSON_OBJECT('name','Black','color','#111111'),JSON_OBJECT('name','Navy','color','#172554')),NULL),
-(3,'SHR-PT-001','Tailored Everyday Trouser',2190,2590,15,'Pant','Tailored','https://images.unsplash.com/photo-1506629082955-511b1aa562c8?q=80&w=1200&auto=format&fit=crop',JSON_ARRAY(),'Versatile tailored trouser for work and weekends.','## Details\n\nComfort stretch, clean front and tapered leg.',4.7,22,20,'Active',1,JSON_ARRAY(JSON_OBJECT('size','30','isAvailable',true,'quantity',4),JSON_OBJECT('size','32','isAvailable',true,'quantity',6),JSON_OBJECT('size','34','isAvailable',true,'quantity',6),JSON_OBJECT('size','36','isAvailable',true,'quantity',4)),JSON_ARRAY(JSON_OBJECT('name','Charcoal','color','#3f3f46'),JSON_OBJECT('name','Khaki','color','#a16207')),NULL),
-(4,'SHR-SH-002','Relaxed Oxford Shirt',1690,1990,15,'Shirt','Oxford','https://images.unsplash.com/photo-1598033129183-c4f50c736f10?q=80&w=1200&auto=format&fit=crop',JSON_ARRAY(),'Relaxed oxford shirt with timeless styling.','## Details\n\nDurable cotton weave, button-down collar and relaxed fit.',4.9,12,18,'Active',1,JSON_ARRAY(JSON_OBJECT('size','S','isAvailable',true,'quantity',3),JSON_OBJECT('size','M','isAvailable',true,'quantity',5),JSON_OBJECT('size','L','isAvailable',true,'quantity',6),JSON_OBJECT('size','XL','isAvailable',true,'quantity',4)),JSON_ARRAY(JSON_OBJECT('name','Sky Blue','color','#93c5fd'),JSON_OBJECT('name','White','color','#f5f5f5')),NULL),
-(5,'SHR-SH-003','Leather Minimal Sneaker',3490,3990,12,'Shoes','Sneakers','https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop',JSON_ARRAY(),'Minimal low-top sneaker for clean everyday styling.','## Details\n\nCushioned footbed and durable outsole.',4.8,27,16,'Active',1,JSON_ARRAY(JSON_OBJECT('size','40','isAvailable',true,'quantity',4),JSON_OBJECT('size','41','isAvailable',true,'quantity',4),JSON_OBJECT('size','42','isAvailable',true,'quantity',4),JSON_OBJECT('size','43','isAvailable',true,'quantity',4)),JSON_ARRAY(JSON_OBJECT('name','White','color','#f5f5f5'),JSON_OBJECT('name','Black','color','#111111')),NULL),
-(6,'SHR-CB-001','Weekend Two-Piece Combo',3290,3890,15,'Combo','Set','https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=1200&auto=format&fit=crop',JSON_ARRAY(),'Coordinated shirt and trouser set.','## Details\n\nA ready-to-wear combination designed for effortless styling.',4.9,20,15,'Active',1,JSON_ARRAY(JSON_OBJECT('size','M','isAvailable',true,'quantity',5),JSON_OBJECT('size','L','isAvailable',true,'quantity',5),JSON_OBJECT('size','XL','isAvailable',true,'quantity',5)),JSON_ARRAY(JSON_OBJECT('name','Stone','color','#a8a29e'),JSON_OBJECT('name','Black','color','#111111')),NULL)
-ON DUPLICATE KEY UPDATE name=VALUES(name),price=VALUES(price),original_price=VALUES(original_price),discount=VALUES(discount),category=VALUES(category),sub_category=VALUES(sub_category),image=VALUES(image),description=VALUES(description),product_details=VALUES(product_details),stock=VALUES(stock),status=VALUES(status),show_size_section=VALUES(show_size_section),sizes=VALUES(sizes),colors=VALUES(colors);
+USE sharuu_store;
+
+INSERT INTO products
+(
+id,
+product_code,
+name,
+price,
+original_price,
+discount,
+category,
+sub_category,
+image,
+extra_images,
+description,
+product_details,
+rating,
+reviews,
+stock,
+status,
+show_size_section,
+sizes,
+colors
+)
+VALUES
+
+(1,'SHR-TS-001','Premium Oversized Cotton T-Shirt',1290,1590,19,'T-Shirt','Oversized',
+'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab',
+JSON_ARRAY(),
+'Premium heavyweight cotton oversized t-shirt.',
+'Premium cotton fabric. Relaxed fit. Everyday comfort.',
+4.9,25,50,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Black','color','#111111'),
+JSON_OBJECT('name','White','color','#ffffff')
+)),
+
+(2,'SHR-TS-002','Classic Polo T-Shirt',1490,1790,17,'T-Shirt','Polo',
+'https://images.unsplash.com/photo-1627225924765-552d49cf47ad',
+JSON_ARRAY(),
+'Classic premium polo t-shirt.',
+'Cotton pique fabric. Smart casual style.',
+4.8,18,35,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Navy','color','#172554'),
+JSON_OBJECT('name','White','color','#ffffff')
+)),
+
+(3,'SHR-SH-001','Premium Linen Shirt',2190,2590,15,'Shirt','Linen',
+'https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf',
+JSON_ARRAY(),
+'Elegant linen shirt.',
+'Breathable linen fabric. Premium finishing.',
+4.9,30,40,'Active',1,
+JSON_ARRAY('S','M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','White','color','#ffffff'),
+JSON_OBJECT('name','Sky Blue','color','#93c5fd')
+)),
+
+(4,'SHR-SH-002','Oxford Casual Shirt',1890,2290,18,'Shirt','Oxford',
+'https://images.unsplash.com/photo-1598033129183-c4f50c736f10',
+JSON_ARRAY(),
+'Classic oxford shirt.',
+'Cotton weave with comfortable fit.',
+4.7,20,30,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Blue','color','#2563eb'),
+JSON_OBJECT('name','White','color','#ffffff')
+)),
+
+(5,'SHR-PT-001','Slim Fit Chino Pant',2390,2890,17,'Pant','Chino',
+'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80',
+JSON_ARRAY(),
+'Modern slim fit chino pant.',
+'Stretch cotton fabric.',
+4.8,22,25,'Active',1,
+JSON_ARRAY('30','32','34','36'),
+JSON_ARRAY(
+JSON_OBJECT('name','Khaki','color','#a16207'),
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(6,'SHR-PT-002','Formal Tailored Trouser',2590,2990,13,'Pant','Formal',
+'https://images.unsplash.com/photo-1506629082955-511b1aa562c8',
+JSON_ARRAY(),
+'Premium formal trouser.',
+'Comfort waistband and tailored cut.',
+4.7,15,20,'Active',1,
+JSON_ARRAY('30','32','34'),
+JSON_ARRAY(
+JSON_OBJECT('name','Charcoal','color','#3f3f46')
+)),
+
+(7,'SHR-SH-003','Minimal Leather Sneaker',3490,3990,12,'Shoes','Sneaker',
+'https://images.unsplash.com/photo-1549298916-b41d501d3772',
+JSON_ARRAY(),
+'Minimal leather sneaker.',
+'Premium leather upper and comfort sole.',
+4.9,45,20,'Active',1,
+JSON_ARRAY('40','41','42','43'),
+JSON_ARRAY(
+JSON_OBJECT('name','White','color','#ffffff'),
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(8,'SHR-SH-004','Denim Casual Shirt',1990,2390,16,'Shirt','Denim',
+'https://images.unsplash.com/photo-1603252110481-7ba873bf42ab',
+JSON_ARRAY(),
+'Stylish denim shirt.',
+'Heavy denim fabric.',
+4.6,12,18,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Blue','color','#1d4ed8')
+)),
+
+(9,'SHR-ACC-001','Premium Leather Wallet',890,1190,25,'Accessories','Wallet',
+'https://images.unsplash.com/photo-1627123424574-724758594e93',
+JSON_ARRAY(),
+'Premium leather wallet.',
+'Genuine leather finish.',
+4.8,35,60,'Active',0,
+JSON_ARRAY(),
+JSON_ARRAY(
+JSON_OBJECT('name','Brown','color','#78350f'),
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(10,'SHR-ACC-002','Classic Leather Belt',990,1290,23,'Accessories','Belt',
+'https://images.unsplash.com/photo-1624222247344-550fb60583dc',
+JSON_ARRAY(),
+'Classic leather belt.',
+'Premium buckle design.',
+4.7,19,40,'Active',0,
+JSON_ARRAY(),
+JSON_ARRAY(
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(11,'SHR-CB-001','Weekend Fashion Combo',3290,3890,15,'Combo','Set',
+'https://images.unsplash.com/photo-1617137968427-85924c800a22',
+JSON_ARRAY(),
+'Complete weekend outfit combo.',
+'Shirt and trouser combination.',
+4.9,20,15,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(12,'SHR-TS-003','Graphic Street T-Shirt',1190,1490,20,'T-Shirt','Graphic',
+'https://images.unsplash.com/photo-1503341504253-dff4815485f1',
+JSON_ARRAY(),
+'Street style graphic t-shirt.',
+'Soft cotton print design.',
+4.6,14,45,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(13,'SHR-SH-005','Premium Casual Shirt',1790,2190,18,'Shirt','Casual',
+'https://images.unsplash.com/photo-1596755389378-c31d21fd1273',
+JSON_ARRAY(),
+'Everyday casual shirt.',
+'Comfortable cotton material.',
+4.7,16,25,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Green','color','#166534')
+)),
+
+(14,'SHR-PT-003','Cargo Pant',2290,2690,15,'Pant','Cargo',
+'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f',
+JSON_ARRAY(),
+'Modern cargo pant.',
+'Multiple pocket design.',
+4.6,18,30,'Active',1,
+JSON_ARRAY('30','32','34'),
+JSON_ARRAY(
+JSON_OBJECT('name','Olive','color','#365314')
+)),
+
+(15,'SHR-SH-006','Running Sneaker',2990,3490,14,'Shoes','Sports',
+'https://images.unsplash.com/photo-1542291026-7eec264c27ff',
+JSON_ARRAY(),
+'Sports running sneaker.',
+'Lightweight comfortable shoe.',
+4.8,28,22,'Active',1,
+JSON_ARRAY('40','41','42','43'),
+JSON_ARRAY(
+JSON_OBJECT('name','White','color','#ffffff')
+)),
+
+(16,'SHR-ACC-003','Premium Sunglasses',1290,1590,19,'Accessories','Sunglasses',
+'https://images.unsplash.com/photo-1511499767150-a48a237f0083',
+JSON_ARRAY(),
+'Fashion sunglasses.',
+'UV protection lens.',
+4.7,21,35,'Active',0,
+JSON_ARRAY(),
+JSON_ARRAY(
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(17,'SHR-TS-004','Basic Essential Tee',990,1290,23,'T-Shirt','Basic',
+'https://images.unsplash.com/photo-1523381210434-271e8be1f52b',
+JSON_ARRAY(),
+'Basic everyday t-shirt.',
+'Soft cotton material.',
+4.5,10,60,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Grey','color','#6b7280')
+)),
+
+(18,'SHR-SH-007','Formal White Shirt',1990,2390,16,'Shirt','Formal',
+'https://images.unsplash.com/photo-1598033129183-c4f50c736f10',
+JSON_ARRAY(),
+'Formal office shirt.',
+'Premium formal cotton.',
+4.8,25,20,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','White','color','#ffffff')
+)),
+
+(19,'SHR-ACC-004','Classic Cap',690,890,22,'Accessories','Cap',
+'https://images.unsplash.com/photo-1588850561407-ed78c282e89b',
+JSON_ARRAY(),
+'Classic fashion cap.',
+'Adjustable fitting.',
+4.6,12,50,'Active',0,
+JSON_ARRAY(),
+JSON_ARRAY(
+JSON_OBJECT('name','Black','color','#111111')
+)),
+
+(20,'SHR-CB-002','Luxury Complete Outfit',4990,5990,17,'Combo','Premium Set',
+'https://images.unsplash.com/photo-1496747611176-843222e1e57c',
+JSON_ARRAY(),
+'Complete luxury outfit.',
+'Premium shirt, pant and accessories combo.',
+4.9,40,10,'Active',1,
+JSON_ARRAY('M','L','XL'),
+JSON_ARRAY(
+JSON_OBJECT('name','Black','color','#111111')
+))
+
+ON DUPLICATE KEY UPDATE
+name=VALUES(name),
+price=VALUES(price),
+original_price=VALUES(original_price),
+discount=VALUES(discount),
+category=VALUES(category),
+sub_category=VALUES(sub_category),
+image=VALUES(image),
+description=VALUES(description),
+product_details=VALUES(product_details),
+stock=VALUES(stock),
+status=VALUES(status),
+sizes=VALUES(sizes),
+colors=VALUES(colors);
 
 UPDATE settings SET setting_value = JSON_SET(
   setting_value,

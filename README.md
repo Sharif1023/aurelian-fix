@@ -223,12 +223,22 @@ http://localhost:5173
 
 Admin login:
 
-```text
+Login with seed info- (new)
+
+Username: superadmin
+Email: admin@sharuu.com
+Password: Admin@123
+Login Slug: admin-login
+Role: super_admin
+
+```text (old)
+http://localhost:5173/admin-login/admin-login
 http://localhost:5173/admin
 ```
-email & pass
+email & pass-
 admin@example.com
 admin12345!
+---
 admin12345
 ---
 
