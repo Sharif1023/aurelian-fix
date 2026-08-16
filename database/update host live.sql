@@ -1,13 +1,3 @@
-/* =========================================================
-   SHARUU STORE DATABASE
-========================================================= */
-
-CREATE DATABASE IF NOT EXISTS sharuu_store
-CHARACTER SET utf8mb4
-COLLATE utf8mb4_unicode_ci;
-
-USE sharuu_store;
-
 
 /* =========================================================
    ADMINS

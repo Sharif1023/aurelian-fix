@@ -3,7 +3,7 @@
    Admin + Settings + Pages + Coupon + 20 Products
 ========================================================= */
 
-USE sharuu_store;
+USE sharuuco_hello_sharuu_com;
 
 
 /* =========================================================
